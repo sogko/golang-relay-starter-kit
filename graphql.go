@@ -5,6 +5,7 @@ import (
 	"github.com/sogko/graphql-relay-go"
 
 	"github.com/sogko/golang-relay-starter-kit/data"
+	"log"
 )
 
 func main() {
@@ -19,5 +20,10 @@ func main() {
 	http.Handle("/graphql", h)
 
 	// serve!
-	http.ListenAndServe(":8080", nil)
+	port := ":8080"
+	log.Printf(`GraphQL server starting up on http://localhost%v`, port)
+	err := http.ListenAndServe(port, nil)
+	if err != nil {
+		log.Fatalf("ListenAndServe failed, %v", err)
+	}
 }
