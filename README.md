@@ -1,22 +1,26 @@
 # Golang-Relay Starter Kit
 
-This kit includes a **NodeJS** app server, a **Golang** GraphQL server, and a transpiler that you can use to get started building an app with Relay. For a walkthrough, see the [Relay tutorial](https://facebook.github.io/relay/docs/tutorial.html).
+This kit includes:
+- a **NodeJS** app server: to serve the front-end written with `react-relay`
+- a **Golang** GraphQL server: to serve the back-end `graphql-go` server that handles GraphQL queries
+- a Babel transpiler workflow using `webpack` that you can use to get started building an app with Relay.
+
+For a walkthrough, see the [Relay tutorial](https://facebook.github.io/relay/docs/tutorial.html).
 
 ## Important!
 This kit is build on top of https://github.com/relayjs/relay-starter-kit with the following goal:
-- To replace `express-graphql` server with a working Golang GraphQL server using [`graphql-go`](https://github.com/chris-ramon/graphql-go) and [`graphq-relay-go`](https://github.com/sogko/graphql-relay-go)
+- To replace `express-graphql` server with a working Golang GraphQL server using [`graphql-go`](https://github.com/chris-ramon/graphql-go) and [`graphql-relay-go`](https://github.com/sogko/graphql-relay-go)
 
-Notes:
-- This is based on alpha version of `graphql-go` and `graphql-relay-go`. Be sure to watch both repositories for changes.
+### Notes:
+This is based on alpha version of `graphql-go` and `graphql-relay-go`. 
+Be sure to watch both repositories for latest changes.
 
 ## Installation
-
 
 1. Install dependencies for NodeJS app server
 ```
 npm install
 ```
-
 2. Install dependencies for Golang GraphQL server
 ```
 go get -v ./...
