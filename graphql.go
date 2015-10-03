@@ -1,11 +1,10 @@
 package main
 
 import (
-	"github.com/sogko/graphql-go-handler"
-	"net/http"
-
 	"github.com/sogko/golang-relay-starter-kit/data"
+	"github.com/sogko/graphql-go-handler"
 	"log"
+	"net/http"
 )
 
 func main() {
