@@ -7,21 +7,17 @@ This kit includes:
 
 For a walkthrough, see the [Relay tutorial](https://facebook.github.io/relay/docs/tutorial.html).
 
-## Important!
-This kit is build on top of https://github.com/relayjs/relay-starter-kit with the following goal:
-- To replace `express-graphql` server with a working Golang GraphQL server using [`graphql-go`](https://github.com/chris-ramon/graphql-go) and [`graphql-relay-go`](https://github.com/sogko/graphql-relay-go)
-
 ### Notes:
 This is based on alpha version of `graphql-go` and `graphql-relay-go`. 
 Be sure to watch both repositories for latest changes.
 
 ## Installation
 
-1. Install dependencies for NodeJS app server
+- Install dependencies for NodeJS app server
 ```
 npm install
 ```
-2. Install dependencies for Golang GraphQL server
+- Install dependencies for Golang GraphQL server
 ```
 go get -v ./...
 ```
@@ -52,13 +48,16 @@ npm run update-schema
 npm start
 ```
 
+## Examples
+- [todomvc-relay-go](https://github.com/sogko/todomvc-relay-go) - Port of the React/Relay TodoMVC app, driven by a Golang GraphQL backend
+
+Feel free to submit a PR to add to this list.
+
 ## TODOs
 - [x] Swap out `express-graphql` server with a Golang GraphQL server
 - [x] GraphQL schema definition in Golang
 - [x] Generate `schema.json` from schema definition for `babel-relay-plugin`
 - [ ] Generate `schema.graphql` from schema definition
 
-
-## License
-
-Relay Starter Kit is [BSD licensed](./LICENSE). We also provide an additional [patent grant](./PATENTS).
+## Credits
+This kit is build on top of https://github.com/relayjs/relay-starter-kit

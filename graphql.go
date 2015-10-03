@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"github.com/sogko/graphql-relay-go"
+	"net/http"
 
 	"github.com/sogko/golang-relay-starter-kit/data"
 	"log"

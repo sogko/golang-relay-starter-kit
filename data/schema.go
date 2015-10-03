@@ -1,7 +1,8 @@
 package data
+
 import (
-	"github.com/sogko/graphql-relay-go"
 	"github.com/chris-ramon/graphql-go/types"
+	"github.com/sogko/graphql-relay-go"
 )
 
 var userType *types.GraphQLObjectType
@@ -21,7 +22,7 @@ func init() {
 	 * The second defines the way we resolve an object to its GraphQL type.
 	 */
 	nodeDefinitions = gqlrelay.NewNodeDefinitions(gqlrelay.NodeDefinitionsConfig{
-		IdFetcher:  func(id string, info types.GraphQLResolveInfo) interface{} {
+		IdFetcher: func(id string, info types.GraphQLResolveInfo) interface{} {
 			resolvedId := gqlrelay.FromGlobalId(id)
 			if resolvedId.Type == "User" {
 				return GetUser(resolvedId.Id)
@@ -46,13 +47,13 @@ func init() {
 	 * Define your own types here
 	 */
 	widgetType = types.NewGraphQLObjectType(types.GraphQLObjectTypeConfig{
-		Name: "Widget",
+		Name:        "Widget",
 		Description: "A shiny widget'",
 		Fields: types.GraphQLFieldConfigMap{
 			"id": gqlrelay.GlobalIdField("Widget", nil),
 			"name": &types.GraphQLFieldConfig{
 				Description: "The name of the widget",
-				Type: types.GraphQLString,
+				Type:        types.GraphQLString,
 			},
 		},
 		Interfaces: []*types.GraphQLInterfaceType{
@@ -60,19 +61,19 @@ func init() {
 		},
 	})
 	widgetConnection = gqlrelay.ConnectionDefinitions(gqlrelay.ConnectionConfig{
-		Name: "WidgetConnection",
+		Name:     "WidgetConnection",
 		NodeType: widgetType,
 	})
 
 	userType = types.NewGraphQLObjectType(types.GraphQLObjectTypeConfig{
-		Name: "User",
+		Name:        "User",
 		Description: "A person who uses our app",
 		Fields: types.GraphQLFieldConfigMap{
 			"id": gqlrelay.GlobalIdField("User", nil),
 			"widgets": &types.GraphQLFieldConfig{
-				Type: widgetConnection.ConnectionType,
+				Type:        widgetConnection.ConnectionType,
 				Description: "A person's collection of widgets",
-				Args: gqlrelay.ConnectionArgs,
+				Args:        gqlrelay.ConnectionArgs,
 				Resolve: func(p types.GQLFRParams) interface{} {
 					args := gqlrelay.NewConnectionArguments(p.Args)
 					dataSlice := WidgetsToInterfaceSlice(GetWidgets()...)
@@ -118,7 +119,7 @@ func init() {
 	/**
 	* Finally, we construct our schema (whose starting query type is the query
 	* type we defined above) and export it.
-	*/
+	 */
 	var err error
 	Schema, err = types.NewGraphQLSchema(types.GraphQLSchemaConfig{
 		Query: queryType,

@@ -1,13 +1,13 @@
 package main
-import (
-	"github.com/chris-ramon/graphql-go"
-	"github.com/chris-ramon/graphql-go/types"
-	"github.com/chris-ramon/graphql-go/testutil"
 
-	"github.com/sogko/golang-relay-starter-kit/data"
-	"log"
+import (
 	"encoding/json"
+	"github.com/chris-ramon/graphql-go"
+	"github.com/chris-ramon/graphql-go/testutil"
+	"github.com/chris-ramon/graphql-go/types"
+	"github.com/sogko/golang-relay-starter-kit/data"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -36,10 +36,9 @@ func main() {
 	// TODO: Save user readable type system shorthand of schema
 	// pending implementation of printSchema
 	/*
-	fs.writeFileSync(
-	  path.join(__dirname, '../data/schema.graphql'),
-	  printSchema(Schema)
-	);
-	 */
+		fs.writeFileSync(
+		  path.join(__dirname, '../data/schema.graphql'),
+		  printSchema(Schema)
+		);
+	*/
 }
-

@@ -2,19 +2,19 @@ package data
 
 // Model structs
 type User struct {
-	Id string `json:"id"`
-	Name string `json:"name"`
+	Id      string    `json:"id"`
+	Name    string    `json:"name"`
 	Widgets []*Widget `json:"widgets"`
 }
 
 type Widget struct {
-	Id string `json:"id"`
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 
 // Mock data
 var viewer = &User{
-	Id: "1",
+	Id:   "1",
 	Name: "Anonymous",
 }
 var widgets = []*Widget{
@@ -44,7 +44,7 @@ func GetWidget(id string) *Widget {
 func GetWidgets() []*Widget {
 	return widgets
 }
-func WidgetsToInterfaceSlice(widgets ... *Widget) []interface{} {
+func WidgetsToInterfaceSlice(widgets ...*Widget) []interface{} {
 	var interfaceSlice []interface{} = make([]interface{}, len(widgets))
 	for i, d := range widgets {
 		interfaceSlice[i] = d
