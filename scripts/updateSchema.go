@@ -2,9 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/chris-ramon/graphql-go"
-	"github.com/chris-ramon/graphql-go/testutil"
-	"github.com/chris-ramon/graphql-go/types"
+	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/graphql/testutil"
 	"github.com/sogko/golang-relay-starter-kit/data"
 	"io/ioutil"
 	"log"
@@ -13,12 +12,10 @@ import (
 
 func main() {
 	// Save JSON of full schema introspection for Babel Relay Plugin to use
-	resultChannel := make(chan *types.GraphQLResult)
-	go gql.Graphql(gql.GraphqlParams{
+	result := graphql.Graphql(graphql.Params{
 		Schema:        data.Schema,
 		RequestString: testutil.IntrospectionQuery,
-	}, resultChannel)
-	result := <-resultChannel
+	})
 	if result.HasErrors() {
 		log.Fatalf("ERROR introspecting schema: %v", result.Errors)
 		return

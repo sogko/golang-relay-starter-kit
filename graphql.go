@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/graphql-go/handler"
 	"github.com/sogko/golang-relay-starter-kit/data"
-	"github.com/sogko/graphql-go-handler"
 	"log"
 	"net/http"
 )
@@ -10,7 +10,7 @@ import (
 func main() {
 
 	// simplest relay-compliant graphql server HTTP handler
-	h := gqlhandler.New(&gqlhandler.Config{
+	h := handler.New(&handler.Config{
 		Schema: &data.Schema,
 		Pretty: true,
 	})

@@ -19,7 +19,7 @@ npm install
 ```
 - Install dependencies for Golang GraphQL server
 ```
-go get -v ./...
+go get -v
 ```
 
 ## Running
@@ -37,9 +37,27 @@ The above command will run both the NodeJS app server and Golang GraphQL server 
 
 ## Developing
 
+### JavaScript
 Any changes you make to files in the `js/` directory will cause the server to
 automatically rebuild the app and refresh your browser.
 
+### Golang
+
+#### Schema data
+Since Golang does not support loading package / module dynamically, remember to update the package import for schema data in:
+- `graphql.go`
+- `scripts/updateSchema.go`
+
+For e.g
+
+```go
+import (
+  ...
+  "github.com/sogko/golang-relay-starter-kit/data" // <--- update to package containing schema
+)
+```
+
+#### Schema updates
 If at any time you make changes to `data/schema.go`, stop the server,
 regenerate `data/schema.json`, and restart the server:
 
@@ -47,6 +65,8 @@ regenerate `data/schema.json`, and restart the server:
 npm run update-schema
 npm start
 ```
+
+`schema.json` is needed by the JS code for `./build/babelRelayPlugin.js`
 
 ## Examples
 - [todomvc-relay-go](https://github.com/sogko/todomvc-relay-go) - Port of the React/Relay TodoMVC app, driven by a Golang GraphQL backend

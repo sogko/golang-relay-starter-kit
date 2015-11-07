@@ -1,17 +1,17 @@
 package data
 
 import (
-	"github.com/chris-ramon/graphql-go/types"
-	"github.com/sogko/graphql-relay-go"
+	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/relay"
 )
 
-var userType *types.GraphQLObjectType
-var widgetType *types.GraphQLObjectType
+var userType *graphql.Object
+var widgetType *graphql.Object
 
-var nodeDefinitions *gqlrelay.NodeDefinitions
-var widgetConnection *gqlrelay.GraphQLConnectionDefinitions
+var nodeDefinitions *relay.NodeDefinitions
+var widgetConnection *relay.GraphQLConnectionDefinitions
 
-var Schema types.GraphQLSchema
+var Schema graphql.Schema
 
 func init() {
 
@@ -21,18 +21,18 @@ func init() {
 	 * The first method defines the way we resolve an ID to its object.
 	 * The second defines the way we resolve an object to its GraphQL type.
 	 */
-	nodeDefinitions = gqlrelay.NewNodeDefinitions(gqlrelay.NodeDefinitionsConfig{
-		IdFetcher: func(id string, info types.GraphQLResolveInfo) interface{} {
-			resolvedId := gqlrelay.FromGlobalId(id)
-			if resolvedId.Type == "User" {
-				return GetUser(resolvedId.Id)
+	nodeDefinitions = relay.NewNodeDefinitions(relay.NodeDefinitionsConfig{
+		IDFetcher: func(id string, info graphql.ResolveInfo) interface{} {
+			resolvedID := relay.FromGlobalID(id)
+			if resolvedID.Type == "User" {
+				return GetUser(resolvedID.ID)
 			}
-			if resolvedId.Type == "Widget" {
-				return GetWidget(resolvedId.Id)
+			if resolvedID.Type == "Widget" {
+				return GetWidget(resolvedID.ID)
 			}
 			return nil
 		},
-		TypeResolve: func(value interface{}, info types.GraphQLResolveInfo) *types.GraphQLObjectType {
+		TypeResolve: func(value interface{}, info graphql.ResolveInfo) *graphql.Object {
 			switch value.(type) {
 			case *User:
 				return userType
@@ -46,42 +46,42 @@ func init() {
 	/**
 	 * Define your own types here
 	 */
-	widgetType = types.NewGraphQLObjectType(types.GraphQLObjectTypeConfig{
+	widgetType = graphql.NewObject(graphql.ObjectConfig{
 		Name:        "Widget",
 		Description: "A shiny widget'",
-		Fields: types.GraphQLFieldConfigMap{
-			"id": gqlrelay.GlobalIdField("Widget", nil),
-			"name": &types.GraphQLFieldConfig{
+		Fields: graphql.FieldConfigMap{
+			"id": relay.GlobalIDField("Widget", nil),
+			"name": &graphql.FieldConfig{
 				Description: "The name of the widget",
-				Type:        types.GraphQLString,
+				Type:        graphql.String,
 			},
 		},
-		Interfaces: []*types.GraphQLInterfaceType{
+		Interfaces: []*graphql.Interface{
 			nodeDefinitions.NodeInterface,
 		},
 	})
-	widgetConnection = gqlrelay.ConnectionDefinitions(gqlrelay.ConnectionConfig{
+	widgetConnection = relay.ConnectionDefinitions(relay.ConnectionConfig{
 		Name:     "WidgetConnection",
 		NodeType: widgetType,
 	})
 
-	userType = types.NewGraphQLObjectType(types.GraphQLObjectTypeConfig{
+	userType = graphql.NewObject(graphql.ObjectConfig{
 		Name:        "User",
 		Description: "A person who uses our app",
-		Fields: types.GraphQLFieldConfigMap{
-			"id": gqlrelay.GlobalIdField("User", nil),
-			"widgets": &types.GraphQLFieldConfig{
+		Fields: graphql.FieldConfigMap{
+			"id": relay.GlobalIDField("User", nil),
+			"widgets": &graphql.FieldConfig{
 				Type:        widgetConnection.ConnectionType,
 				Description: "A person's collection of widgets",
-				Args:        gqlrelay.ConnectionArgs,
-				Resolve: func(p types.GQLFRParams) interface{} {
-					args := gqlrelay.NewConnectionArguments(p.Args)
+				Args:        relay.ConnectionArgs,
+				Resolve: func(p graphql.GQLFRParams) interface{} {
+					args := relay.NewConnectionArguments(p.Args)
 					dataSlice := WidgetsToInterfaceSlice(GetWidgets()...)
-					return gqlrelay.ConnectionFromArray(dataSlice, args)
+					return relay.ConnectionFromArray(dataSlice, args)
 				},
 			},
 		},
-		Interfaces: []*types.GraphQLInterfaceType{
+		Interfaces: []*graphql.Interface{
 			nodeDefinitions.NodeInterface,
 		},
 	})
@@ -90,15 +90,15 @@ func init() {
 	 * This is the type that will be the root of our query,
 	 * and the entry point into our schema.
 	 */
-	queryType := types.NewGraphQLObjectType(types.GraphQLObjectTypeConfig{
+	queryType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Query",
-		Fields: types.GraphQLFieldConfigMap{
+		Fields: graphql.FieldConfigMap{
 			"node": nodeDefinitions.NodeField,
 
 			// Add you own root fields here
-			"viewer": &types.GraphQLFieldConfig{
+			"viewer": &graphql.FieldConfig{
 				Type: userType,
-				Resolve: func(p types.GQLFRParams) interface{} {
+				Resolve: func(p graphql.GQLFRParams) interface{} {
 					return GetViewer()
 				},
 			},
@@ -109,9 +109,9 @@ func init() {
 	 * This is the type that will be the root of our mutations,
 	 * and the entry point into performing writes in our schema.
 	 */
-	//	mutationType := types.NewGraphQLObjectType(types.GraphQLObjectTypeConfig{
+	//	mutationType := graphql.NewObject(graphql.ObjectConfig{
 	//		Name: "Mutation",
-	//		Fields: types.GraphQLFieldConfigMap{
+	//		Fields: graphql.FieldConfigMap{
 	//			// Add you own mutations here
 	//		},
 	//	})
@@ -121,7 +121,7 @@ func init() {
 	* type we defined above) and export it.
 	 */
 	var err error
-	Schema, err = types.NewGraphQLSchema(types.GraphQLSchemaConfig{
+	Schema, err = graphql.NewSchema(graphql.SchemaConfig{
 		Query: queryType,
 	})
 	if err != nil {
