@@ -49,9 +49,9 @@ func init() {
 	widgetType = graphql.NewObject(graphql.ObjectConfig{
 		Name:        "Widget",
 		Description: "A shiny widget'",
-		Fields: graphql.FieldConfigMap{
+		Fields: graphql.Fields{
 			"id": relay.GlobalIDField("Widget", nil),
-			"name": &graphql.FieldConfig{
+			"name": &graphql.Field{
 				Description: "The name of the widget",
 				Type:        graphql.String,
 			},
@@ -68,13 +68,13 @@ func init() {
 	userType = graphql.NewObject(graphql.ObjectConfig{
 		Name:        "User",
 		Description: "A person who uses our app",
-		Fields: graphql.FieldConfigMap{
+		Fields: graphql.Fields{
 			"id": relay.GlobalIDField("User", nil),
-			"widgets": &graphql.FieldConfig{
+			"widgets": &graphql.Field{
 				Type:        widgetConnection.ConnectionType,
 				Description: "A person's collection of widgets",
 				Args:        relay.ConnectionArgs,
-				Resolve: func(p graphql.GQLFRParams) interface{} {
+				Resolve: func(p graphql.ResolveParams) interface{} {
 					args := relay.NewConnectionArguments(p.Args)
 					dataSlice := WidgetsToInterfaceSlice(GetWidgets()...)
 					return relay.ConnectionFromArray(dataSlice, args)
@@ -92,13 +92,13 @@ func init() {
 	 */
 	queryType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Query",
-		Fields: graphql.FieldConfigMap{
+		Fields: graphql.Fields{
 			"node": nodeDefinitions.NodeField,
 
 			// Add you own root fields here
-			"viewer": &graphql.FieldConfig{
+			"viewer": &graphql.Field{
 				Type: userType,
-				Resolve: func(p graphql.GQLFRParams) interface{} {
+				Resolve: func(p graphql.ResolveParams) interface{} {
 					return GetViewer()
 				},
 			},
@@ -111,7 +111,7 @@ func init() {
 	 */
 	//	mutationType := graphql.NewObject(graphql.ObjectConfig{
 	//		Name: "Mutation",
-	//		Fields: graphql.FieldConfigMap{
+	//		Fields: graphql.Fields{
 	//			// Add you own mutations here
 	//		},
 	//	})
