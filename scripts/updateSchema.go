@@ -12,7 +12,7 @@ import (
 
 func main() {
 	// Save JSON of full schema introspection for Babel Relay Plugin to use
-	result := graphql.Graphql(graphql.Params{
+	result := graphql.Do(graphql.Params{
 		Schema:        data.Schema,
 		RequestString: testutil.IntrospectionQuery,
 	})
