@@ -3,6 +3,7 @@ package data
 import (
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/relay"
+	"golang.org/x/net/context"
 )
 
 var userType *graphql.Object
@@ -22,15 +23,15 @@ func init() {
 	 * The second defines the way we resolve an object to its GraphQL type.
 	 */
 	nodeDefinitions = relay.NewNodeDefinitions(relay.NodeDefinitionsConfig{
-		IDFetcher: func(id string, info graphql.ResolveInfo) interface{} {
+		IDFetcher: func(id string, info graphql.ResolveInfo, ct context.Context) (interface{}, error) {
 			resolvedID := relay.FromGlobalID(id)
 			if resolvedID.Type == "User" {
-				return GetUser(resolvedID.ID)
+				return GetUser(resolvedID.ID), nil
 			}
 			if resolvedID.Type == "Widget" {
-				return GetWidget(resolvedID.ID)
+				return GetWidget(resolvedID.ID), nil
 			}
-			return nil
+			return nil, nil
 		},
 		TypeResolve: func(value interface{}, info graphql.ResolveInfo) *graphql.Object {
 			switch value.(type) {
