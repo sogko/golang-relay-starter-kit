@@ -33,8 +33,8 @@ func init() {
 			}
 			return nil, nil
 		},
-		TypeResolve: func(value interface{}, info graphql.ResolveInfo) *graphql.Object {
-			switch value.(type) {
+		TypeResolve: func(p graphql.ResolveTypeParams) *graphql.Object {
+			switch p.Value.(type) {
 			case *User:
 				return userType
 			case *Widget:
